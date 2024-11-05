@@ -1,4 +1,4 @@
-package app.sizzle.cmp.networking
+package app.sizzle.cmp.core.data
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine

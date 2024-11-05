@@ -1,6 +1,5 @@
-package app.sizzle.cmp.networking
+package app.sizzle.cmp.meals.data
 
-import app.sizzle.cmp.data.MealsResponse
 import app.sizzle.cmp.util.NetworkError
 import app.sizzle.cmp.util.Result
 import io.ktor.client.HttpClient

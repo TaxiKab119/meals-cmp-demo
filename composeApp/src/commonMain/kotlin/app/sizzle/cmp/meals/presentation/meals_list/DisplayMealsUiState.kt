@@ -1,6 +1,6 @@
-package app.sizzle.cmp.ui
+package app.sizzle.cmp.meals.presentation.meals_list
 
-import app.sizzle.cmp.data.Meal
+import app.sizzle.cmp.meals.data.Meal
 
 data class DisplayMealsUiState(
     val meals: List<Meal> = listOf(),

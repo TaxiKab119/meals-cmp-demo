@@ -1,4 +1,4 @@
-package app.sizzle.cmp.ui
+package app.sizzle.cmp.meals.presentation.meals_list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,7 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.sizzle.cmp.data.Meal
+import app.sizzle.cmp.meals.data.Meal
 import coil3.compose.AsyncImage
 
 @Composable

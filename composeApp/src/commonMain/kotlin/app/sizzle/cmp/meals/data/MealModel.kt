@@ -1,4 +1,4 @@
-package app.sizzle.cmp.data
+package app.sizzle.cmp.meals.data
 
 import kotlinx.serialization.Serializable
 

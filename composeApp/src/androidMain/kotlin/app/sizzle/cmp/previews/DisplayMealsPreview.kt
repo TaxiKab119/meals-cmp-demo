@@ -3,10 +3,10 @@ package app.sizzle.cmp.previews
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import app.sizzle.cmp.data.SampleMealsData
-import app.sizzle.cmp.ui.DisplayMealsScreen
-import app.sizzle.cmp.ui.DisplayMealsUiState
-import app.sizzle.cmp.ui.ScreenState
+import app.sizzle.cmp.meals.data.SampleMealsData
+import app.sizzle.cmp.meals.presentation.meals_list.DisplayMealsScreen
+import app.sizzle.cmp.meals.presentation.meals_list.DisplayMealsUiState
+import app.sizzle.cmp.meals.presentation.meals_list.ScreenState
 
 @Composable
 @Preview

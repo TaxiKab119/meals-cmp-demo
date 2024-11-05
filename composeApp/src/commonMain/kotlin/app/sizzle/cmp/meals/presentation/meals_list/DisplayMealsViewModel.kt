@@ -1,8 +1,8 @@
-package app.sizzle.cmp.ui
+package app.sizzle.cmp.meals.presentation.meals_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.sizzle.cmp.networking.MealsDbClient
+import app.sizzle.cmp.meals.data.MealsDbClient
 import app.sizzle.cmp.util.onError
 import app.sizzle.cmp.util.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
