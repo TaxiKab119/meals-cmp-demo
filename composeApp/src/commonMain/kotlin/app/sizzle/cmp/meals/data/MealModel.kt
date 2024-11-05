@@ -19,13 +19,10 @@ data class Meal(
 data class MealDetails(
     val idMeal: String,
     val strMeal: String,
-    val strDrinkAlternate: String? = null,
     val strCategory: String,
     val strArea: String,
     val strInstructions: String,
     val strMealThumb: String,
-    val strTags: String? = null,
-    val strYoutube: String? = null,
     val strIngredient1: String? = null,
     val strIngredient2: String? = null,
     val strIngredient3: String? = null,

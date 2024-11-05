@@ -1,5 +1,7 @@
 package app.sizzle.cmp.meals.presentation.meals_list
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,13 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -23,20 +22,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import app.sizzle.cmp.core.presentation.ErrorScreen
+import app.sizzle.cmp.core.presentation.LoadingScreen
 import app.sizzle.cmp.meals.data.Meal
 import coil3.compose.AsyncImage
 
 @Composable
 fun DisplayMealsRoot(
     viewModel: DisplayMealsViewModel,
+    onMealClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val uiState by viewModel.displayMealsUiState.collectAsStateWithLifecycle(initialValue = DisplayMealsUiState())
+    val uiState by viewModel.displayMealsUiState.collectAsStateWithLifecycle()
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         when(uiState.screenState) {
             ScreenState.LOADING -> LoadingScreen()
@@ -44,7 +47,8 @@ fun DisplayMealsRoot(
             ScreenState.SUCCESS -> {
                 DisplayMealsScreen(
                     uiState = uiState,
-                    modifier = modifier.padding(innerPadding)
+                    modifier = modifier.padding(innerPadding),
+                    onMealClick = { onMealClick(it) }
                 )
             }
         }
@@ -54,6 +58,7 @@ fun DisplayMealsRoot(
 @Composable
 fun DisplayMealsScreen(
     uiState: DisplayMealsUiState,
+    onMealClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -62,72 +67,56 @@ fun DisplayMealsScreen(
         contentPadding = PaddingValues(16.dp)
     ) {
         items(uiState.meals) { meal ->
-            MealItem(meal)
+            MealItem(meal) {
+                onMealClick(it)
+            }
         }
     }
 }
 
 @Composable
-fun MealItem(meal: Meal) {
+fun MealItem(
+    meal: Meal,
+    onClick: (String) -> Unit,
+) {
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 4.dp,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onClick(meal.idMeal)
+            }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
         ) {
-            // Display the meal image
-            AsyncImage(
-                model = meal.strMealThumb,
-                contentDescription = meal.strMeal,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(250.dp),
-            )
+            Box(
+                modifier = Modifier.background(Color.Gray)
+            ) {
+                // Display the meal image
+                AsyncImage(
+                    model = meal.strMealThumb,
+                    contentDescription = meal.strMeal,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .height(250.dp)
+                        .fillMaxWidth(),
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
-            // Meal name
             Text(
                 text = meal.strMeal,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body2.copy(
                     fontWeight = FontWeight.Bold
                 ),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp)
             )
-        }
-    }
-}
-
-@Composable
-fun LoadingScreen() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-
-
-
-@Composable
-fun ErrorScreen(onRetry: () -> Unit) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "An error occurred while loading meals.")
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { onRetry() }) {
-                Text("Retry")
-            }
         }
     }
 }
