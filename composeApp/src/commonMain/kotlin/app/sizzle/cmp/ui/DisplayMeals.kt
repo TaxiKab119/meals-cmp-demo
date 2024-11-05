@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,12 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.sizzle.cmp.data.Meal
-import app.sizzle.cmp.data.SampleMealsData
 import coil3.compose.AsyncImage
-import coil3.compose.LocalPlatformContext
-import coil3.request.ImageRequest
-import coil3.request.crossfade
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DisplayMealsRoot(
@@ -78,7 +74,6 @@ fun MealItem(meal: Meal) {
         elevation = 4.dp,
         modifier = Modifier.fillMaxWidth()
     ) {
-        val context = LocalPlatformContext.current
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -86,15 +81,11 @@ fun MealItem(meal: Meal) {
                 .padding(16.dp)
         ) {
             // Display the meal image
-            Text(meal.strMealThumb)
             AsyncImage(
-                model = ImageRequest.Builder(context)
-                    .data(meal.strMealThumb)
-                    .crossfade(true)
-                    .build(),
+                model = meal.strMealThumb,
                 contentDescription = meal.strMeal,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.size(250.dp),
             )
             Spacer(modifier = Modifier.height(8.dp))
             // Meal name
@@ -138,20 +129,5 @@ fun ErrorScreen(onRetry: () -> Unit) {
                 Text("Retry")
             }
         }
-    }
-}
-
-
-
-@Preview
-@Composable
-fun DisplayMealsScreenPreview() {
-    MaterialTheme {
-        DisplayMealsScreen(
-            uiState = DisplayMealsUiState(
-                screenState = ScreenState.SUCCESS,
-                meals = SampleMealsData.sampleMeals
-            )
-        )
     }
 }
