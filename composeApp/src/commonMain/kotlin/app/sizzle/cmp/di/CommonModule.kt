@@ -9,5 +9,5 @@ val commonModule = module {
     // Provide DisplayMealsViewModel with Koin's viewModel scope
     viewModel { DisplayMealsViewModel(client = get()) }
     // Provide MealDetailViewModel with Koin's viewModel scope
-    viewModel { MealDetailViewModel(client = get()) }
+    viewModel { parameters -> MealDetailViewModel(client = get(), mealId = parameters.get()) }
 }

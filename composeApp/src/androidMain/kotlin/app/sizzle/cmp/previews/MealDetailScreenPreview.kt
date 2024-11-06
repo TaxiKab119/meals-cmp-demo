@@ -20,7 +20,7 @@ fun MealDetailsScreenPreview() {
                 screenState = ScreenState.SUCCESS
             ),
             modifier = Modifier.background(MaterialTheme.colors.background),
-            mealId = ""
+            onClose = {}
         )
     }
 }

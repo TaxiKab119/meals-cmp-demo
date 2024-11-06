@@ -1,5 +1,6 @@
 package app.sizzle.cmp.meals.data
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -14,6 +15,10 @@ data class Meal(
     val strMealThumb: String
 )
 
+@Serializable
+data class MealDetailsResponse(
+    @SerialName("meals") val mealDetails: List<MealDetails>
+)
 
 @Serializable
 data class MealDetails(

@@ -4,13 +4,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.sizzle.cmp.meals.data.MealDetails
 import app.sizzle.cmp.meals.data.MealsDbClient
+import app.sizzle.cmp.meals.presentation.meals_list.ScreenState
+import app.sizzle.cmp.util.onError
+import app.sizzle.cmp.util.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MealDetailViewModel(private val client: MealsDbClient): ViewModel() {
+class MealDetailViewModel(
+    private val client: MealsDbClient,
+    private val mealId: String,
+) : ViewModel() {
     private val initialMealDetailsState = MealDetails(
         idMeal = "",
         strMeal = "",
@@ -44,7 +51,28 @@ class MealDetailViewModel(private val client: MealsDbClient): ViewModel() {
 
     fun loadMealDetailData() {
         viewModelScope.launch {
-            //TODO
+            _mealDetailUiState.update {
+                it.copy(
+                    screenState = ScreenState.LOADING
+                )
+            }
+            client.getMealDetails(mealId = mealId)
+                .onSuccess { mealDetails ->
+                    println(mealDetails)
+                    _mealDetailUiState.update {
+                        it.copy(
+                            screenState = ScreenState.SUCCESS,
+                            mealDetails = mealDetails
+                        )
+                    }
+                }
+                .onError {
+                    _mealDetailUiState.update {
+                        it.copy(
+                            screenState = ScreenState.ERROR
+                        )
+                    }
+                }
         }
     }
 }

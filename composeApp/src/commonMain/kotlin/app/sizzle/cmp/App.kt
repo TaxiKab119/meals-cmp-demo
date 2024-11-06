@@ -16,6 +16,7 @@ import app.sizzle.cmp.util.getAsyncImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 @Preview
@@ -26,7 +27,6 @@ fun App() {
         }
 
         val displayMealsViewModel: DisplayMealsViewModel = koinViewModel()
-        val mealDetailViewModel: MealDetailViewModel = koinViewModel()
 
         val navController = rememberNavController()
 
@@ -42,10 +42,13 @@ fun App() {
                 )
             }
             composable<DetailScreen> {backStackEntry ->
-                val mealId: DetailScreen = backStackEntry.toRoute()
+                val detailScreen: DetailScreen = backStackEntry.toRoute()
+                val mealDetailViewModel: MealDetailViewModel = koinViewModel { parametersOf(detailScreen.mealId) }
                 MealDetailRoot(
                     viewModel = mealDetailViewModel,
-                    mealId = mealId.mealId
+                    onClose = {
+                        navController.popBackStack()
+                    }
                 )
             }
         }
