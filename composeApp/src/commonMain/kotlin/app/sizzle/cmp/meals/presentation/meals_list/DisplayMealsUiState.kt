@@ -6,7 +6,7 @@ import app.sizzle.cmp.meals.data.Meal
 @Immutable
 data class DisplayMealsUiState(
     val meals: List<Meal> = listOf(),
-    val screenState: ScreenState = ScreenState.LOADING
+    val screenState: ScreenState = ScreenState.SUCCESS
 )
 
 enum class ScreenState {

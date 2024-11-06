@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import app.sizzle.cmp.meals.data.MealsDbClient
 import app.sizzle.cmp.meals.presentation.meal_detail.MealDetailRoot
 import app.sizzle.cmp.meals.presentation.meal_detail.MealDetailViewModel
 import app.sizzle.cmp.meals.presentation.meals_list.DisplayMealsRoot
@@ -16,21 +15,25 @@ import app.sizzle.cmp.navigation.ListScreen
 import app.sizzle.cmp.util.getAsyncImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 @Preview
-fun App(client: MealsDbClient) {
+fun App() {
     MaterialTheme {
         setSingletonImageLoaderFactory { context ->
             getAsyncImageLoader(context)
         }
+
+        val displayMealsViewModel: DisplayMealsViewModel = koinViewModel()
+        val mealDetailViewModel: MealDetailViewModel = koinViewModel()
 
         val navController = rememberNavController()
 
         NavHost(navController, startDestination = ListScreen) {
             composable<ListScreen> {
                 DisplayMealsRoot(
-                    viewModel = DisplayMealsViewModel(client),
+                    viewModel = displayMealsViewModel,
                     onMealClick = { mealId ->
                         navController.navigate(
                             DetailScreen(mealId = mealId)
@@ -41,7 +44,7 @@ fun App(client: MealsDbClient) {
             composable<DetailScreen> {backStackEntry ->
                 val mealId: DetailScreen = backStackEntry.toRoute()
                 MealDetailRoot(
-                    viewModel = MealDetailViewModel(client),
+                    viewModel = mealDetailViewModel,
                     mealId = mealId.mealId
                 )
             }

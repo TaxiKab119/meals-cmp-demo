@@ -42,7 +42,7 @@ fun DisplayMealsRoot(
     val uiState by viewModel.displayMealsUiState.collectAsStateWithLifecycle()
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         when(uiState.screenState) {
-            ScreenState.LOADING -> LoadingScreen()
+            ScreenState.LOADING -> { LoadingScreen() }
             ScreenState.ERROR -> ErrorScreen() { viewModel.getMealsData() }
             ScreenState.SUCCESS -> {
                 DisplayMealsScreen(

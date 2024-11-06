@@ -3,20 +3,22 @@ package app.sizzle.cmp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.remember
-import app.sizzle.cmp.meals.data.MealsDbClient
-import app.sizzle.cmp.core.data.createHttpClient
-import io.ktor.client.engine.okhttp.OkHttp
+import app.sizzle.cmp.di.androidNetworkingModule
+import app.sizzle.cmp.di.commonModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        startKoin {
+            androidContext(this@MainActivity)
+            modules(androidNetworkingModule, commonModule)
+        }
+
         setContent {
-            App(
-                client = remember {
-                    MealsDbClient(createHttpClient(OkHttp.create()))
-                }
-            )
+            App()
         }
     }
 }

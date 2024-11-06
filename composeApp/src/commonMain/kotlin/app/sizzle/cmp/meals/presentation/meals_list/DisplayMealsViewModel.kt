@@ -21,13 +21,19 @@ class DisplayMealsViewModel(private val client: MealsDbClient) : ViewModel() {
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
             DisplayMealsUiState(
-                screenState = ScreenState.LOADING
+                screenState = ScreenState.SUCCESS
             )
         )
 
 
     fun getMealsData() {
         viewModelScope.launch {
+            _displayMealsUiState.update {
+                it.copy(
+                    screenState = ScreenState.LOADING
+                )
+            }
+
             client.getBeefMeals()
                 .onSuccess { apiResponse ->
                     _displayMealsUiState.update {
