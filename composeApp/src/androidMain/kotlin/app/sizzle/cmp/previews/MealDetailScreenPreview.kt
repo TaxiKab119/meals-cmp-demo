@@ -11,7 +11,7 @@ import app.sizzle.cmp.meals.presentation.meal_detail.MealsDetailScreen
 import app.sizzle.cmp.meals.presentation.meals_list.ScreenState
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun MealDetailsScreenPreview() {
     MaterialTheme {
         MealsDetailScreen(
@@ -20,7 +20,7 @@ fun MealDetailsScreenPreview() {
                 screenState = ScreenState.SUCCESS
             ),
             modifier = Modifier.background(MaterialTheme.colors.background),
-            onClose = {}
+            onBackPress = {}
         )
     }
 }
