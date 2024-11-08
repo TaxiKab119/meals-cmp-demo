@@ -49,7 +49,7 @@ class MealDetailViewModel(
             MealDetailUiState(initialMealDetailsState)
         )
 
-    fun loadMealDetailData() {
+    private fun loadMealDetailData() {
         viewModelScope.launch {
             _mealDetailUiState.update {
                 it.copy(

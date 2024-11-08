@@ -1,5 +1,7 @@
 package app.sizzle.cmp
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
@@ -18,6 +20,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 @Preview
 fun App() {
@@ -25,31 +28,34 @@ fun App() {
         setSingletonImageLoaderFactory { context ->
             getAsyncImageLoader(context)
         }
+        SharedTransitionLayout {
 
-        val displayMealsViewModel: DisplayMealsViewModel = koinViewModel()
+            val displayMealsViewModel: DisplayMealsViewModel = koinViewModel()
 
-        val navController = rememberNavController()
+            val navController = rememberNavController()
 
-        NavHost(navController, startDestination = ListScreen) {
-            composable<ListScreen> {
-                DisplayMealsRoot(
-                    viewModel = displayMealsViewModel,
-                    onMealClick = { mealId ->
-                        navController.navigate(
-                            DetailScreen(mealId = mealId)
-                        )
-                    }
-                )
-            }
-            composable<DetailScreen> {backStackEntry ->
-                val detailScreen: DetailScreen = backStackEntry.toRoute()
-                val mealDetailViewModel: MealDetailViewModel = koinViewModel { parametersOf(detailScreen.mealId) }
-                MealDetailRoot(
-                    viewModel = mealDetailViewModel,
-                    onClose = {
-                        navController.popBackStack()
-                    }
-                )
+            NavHost(navController, startDestination = ListScreen) {
+                composable<ListScreen> {
+                    DisplayMealsRoot(
+                        viewModel = displayMealsViewModel,
+                        onMealClick = { mealId ->
+                            navController.navigate(DetailScreen(mealId = mealId))
+                        },
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedContentScope = this@composable
+                    )
+                }
+                composable<DetailScreen> { backStackEntry ->
+                    val detailScreen: DetailScreen = backStackEntry.toRoute()
+                    val mealDetailViewModel: MealDetailViewModel =
+                        koinViewModel { parametersOf(detailScreen.mealId) }
+                    MealDetailRoot(
+                        viewModel = mealDetailViewModel,
+                        onClose = { navController.popBackStack() },
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedContentScope = this@composable
+                    )
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package app.sizzle.cmp.previews
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import app.sizzle.cmp.meals.presentation.meal_detail.MealDetailUiState
 import app.sizzle.cmp.meals.presentation.meal_detail.MealsDetailScreen
 import app.sizzle.cmp.meals.presentation.meals_list.ScreenState
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 @Preview(showBackground = true)
 fun MealDetailsScreenPreview() {
@@ -20,7 +22,9 @@ fun MealDetailsScreenPreview() {
                 screenState = ScreenState.SUCCESS
             ),
             modifier = Modifier.background(MaterialTheme.colors.background),
-            onBackPress = {}
+            onBackPress = {},
+            sharedTransitionScope = TODO(),
+            animatedContentScope = TODO(),
         )
     }
 }
