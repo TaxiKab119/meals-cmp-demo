@@ -57,6 +57,12 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import org.jetbrains.compose.resources.stringResource
+import sizzlecmpdemo.composeapp.generated.resources.Res
+import sizzlecmpdemo.composeapp.generated.resources.ingredients
+import sizzlecmpdemo.composeapp.generated.resources.instructions
+import sizzlecmpdemo.composeapp.generated.resources.see_less
+import sizzlecmpdemo.composeapp.generated.resources.see_more
 
 
 val sizzleOrange = Color(0xFFFF8147)
@@ -193,7 +199,7 @@ fun MealsDetailScreen(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Instructions",
+                        text = stringResource(Res.string.instructions),
                         style = MaterialTheme.typography.h6,
                         fontWeight = FontWeight.Bold
                     )
@@ -216,7 +222,11 @@ fun MealsDetailScreen(
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     ) {
                         Text(
-                            text = if (isInstructionsExpanded) "See Less" else "See More",
+                            text = if (isInstructionsExpanded) {
+                                stringResource(Res.string.see_more)
+                            } else {
+                                stringResource(Res.string.see_less)
+                            },
                             color = sizzleOrange
                         )
                     }
@@ -233,7 +243,7 @@ fun MealsDetailScreen(
                 ) {
                     // Display ingredients
                     Text(
-                        text = "Ingredients",
+                        text = stringResource(Res.string.ingredients),
                         style = MaterialTheme.typography.h6,
                         fontWeight = FontWeight.Bold
                     )
